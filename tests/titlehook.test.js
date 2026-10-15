@@ -1,4 +1,4 @@
-// 標題副標: the line under 「你懂多少，就打多重。」 follows the player's state
+// 標題副標: the line under 「增加你的金融超能力」 follows the player's state
 import { describe, it, expect } from 'vitest';
 import { hookLine, ROTATION } from '../src/js/titlehook.js';
 

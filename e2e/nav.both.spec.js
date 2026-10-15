@@ -6,7 +6,7 @@ test('returning players get the play buttons without the intro; the menu is grou
   await open(page);
   await expect(page.locator('#title-wrap')).toHaveClass(/returning/);
   await expect(page.locator('.steps3')).toBeHidden();
-  await expect(page.locator('.title-info h2')).toHaveText('你懂多少，就打多重。');
+  await expect(page.locator('.title-info h2')).toHaveText('增加你的金融超能力');
   await expect(page.locator('#title-hook')).not.toBeEmpty();
   await expect(page.locator('.tgroup')).toHaveCount(3);
   await expect(page.locator('.tgroup').nth(1)).toContainText('卡牌族譜');

@@ -1,4 +1,4 @@
-// titlehook.js — the line under the title's slogan 「你懂多少，就打多重。」, picked from the player's own state:
+// titlehook.js — the line under the title's slogan 「增加你的金融超能力」, picked from the player's own state:
 // a first-time player hears what the game teaches, a player close to the next ranked tier is told how close, a player
 // with a weak attribute is challenged on it; otherwise one of a few lines, changing daily.
 import { CATS } from './carddata.js';
