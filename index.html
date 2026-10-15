@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>金融卡牌小遊戲</title>
+<meta name="description" content="日式卡牌對決風格的金融知識遊戲：召喚交易怪獸，答對技術分析、基本面、衍生性商品、風險管理、籌碼、外匯、虛擬貨幣、ETF、資金管理題目才能攻擊或防禦。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="金融卡牌小遊戲">
+<meta property="og:description" content="你懂多少，就打多重。召喚交易怪獸，答對金融題目才能攻擊或防禦。180 張卡、900 題，免安裝，打開網址即可對戰，也能安裝成 App 離線玩。">
+<meta property="og:url" content="https://maxtrader0207.github.io/Financial_Card_Mini-game/">
+<meta property="og:site_name" content="金融卡牌小遊戲">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://maxtrader0207.github.io/Financial_Card_Mini-game/og-image.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="金融卡牌小遊戲 標題畫面">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="金融卡牌小遊戲">
+<meta name="twitter:image" content="https://maxtrader0207.github.io/Financial_Card_Mini-game/og-image.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- body text font; loaded without blocking the first paint (titles and card names use the bundled FD fonts) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@600;700;800;900&display=swap" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+<div class="waves" aria-hidden="true"></div>
+<canvas id="bg-fx" aria-hidden="true"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="sky-tech" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#081f55"/><stop offset=".6" stop-color="#1d58b8"/><stop offset="1" stop-color="#7cbcff"/></linearGradient>
+    <linearGradient id="sky-fund" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#04241c"/><stop offset=".6" stop-color="#1a7454"/><stop offset="1" stop-color="#a6dcb6"/></linearGradient>
+    <linearGradient id="sky-deriv" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#0e0526"/><stop offset=".6" stop-color="#3a1878"/><stop offset="1" stop-color="#8f63da"/></linearGradient>
+    <linearGradient id="sky-risk" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#2e0a07"/><stop offset=".55" stop-color="#bd4220"/><stop offset="1" stop-color="#f7bb52"/></linearGradient>
+    <linearGradient id="sky-chips" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#241604"/><stop offset=".6" stop-color="#8a5a12"/><stop offset="1" stop-color="#f2c75e"/></linearGradient>
+    <linearGradient id="sky-fx" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#03202a"/><stop offset=".6" stop-color="#11707e"/><stop offset="1" stop-color="#9fe0dc"/></linearGradient>
+    <linearGradient id="sky-crypto" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#16041a"/><stop offset=".6" stop-color="#6a1650"/><stop offset="1" stop-color="#ee7fae"/></linearGradient>
+    <linearGradient id="sky-money" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#1a0622"/><stop offset=".6" stop-color="#6e2478"/><stop offset="1" stop-color="#eeb0e4"/></linearGradient>
+    <linearGradient id="sky-etf" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="60"><stop offset="0" stop-color="#0d1a05"/><stop offset=".6" stop-color="#4a6b17"/><stop offset="1" stop-color="#d8e59a"/></linearGradient>
+    <radialGradient id="sun-gold"><stop offset="0" stop-color="#fff8dc"/><stop offset=".6" stop-color="#f3d27a"/><stop offset="1" stop-color="#d49a32"/></radialGradient>
+    <radialGradient id="sun-shu"><stop offset="0" stop-color="#ffd8c4"/><stop offset=".55" stop-color="#ff6a3d"/><stop offset="1" stop-color="#c8321f"/></radialGradient>
+    <linearGradient id="gold-v" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c2"/><stop offset=".5" stop-color="#e3b75a"/><stop offset="1" stop-color="#9c6e1f"/></linearGradient>
+    <pattern id="seigaiha" width="8" height="4" patternUnits="userSpaceOnUse"><path d="M0 4a4 4 0 0 1 8 0M1.8 4a2.2 2.2 0 0 1 4.4 0M-4 2a4 4 0 0 1 8 0M4 2a4 4 0 0 1 8 0" fill="none" stroke="#ffffff" stroke-opacity=".32" stroke-width=".45"/></pattern>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.1" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+</svg>
+<div class="topbtns"><button class="mute" id="btn-set" type="button" title="設定（快速模式、音量）"><span class="ic">設</span><span class="lbl">設定</span></button><button class="mute" id="btn-mute" type="button" aria-pressed="false" title="切換音效（M）"><span class="ic">音</span><span id="mute-label">音效 開</span></button></div>
+<div class="app">
+
+<!-- TITLE -->
+<section class="screen" id="scr-title">
+  <div class="title-wrap" id="title-wrap">
+    <h1 class="title-v" aria-label="金融卡牌小遊戲"><span aria-hidden="true">金</span><span aria-hidden="true">融</span><span aria-hidden="true">卡</span><span aria-hidden="true">牌</span><span aria-hidden="true">小</span><span aria-hidden="true">遊</span><span aria-hidden="true">戲</span></h1>
+    <div class="title-info">
+      <div class="eyebrow">金融知識卡牌對決</div>
+      <h2>你懂多少，就打多重。</h2>
+      <p class="title-hook" id="title-hook"></p>
+      <button class="daily-card" id="daily-card" type="button" hidden></button>
+      <button class="nb-due" id="nb-due" type="button" hidden><span class="seal-s">複</span><span class="t"><b id="nb-due-n"></b><small>錯題本到期了，花一兩分鐘把它們打回去</small></span><span class="go">開始 ▶</span></button>
+      <div class="quest-card" id="quest-card" hidden>
+        <div class="qc-head"><span class="seal-s">任</span><b>新手任務</b><span class="qc-dots" id="qc-dots" aria-hidden="true"></span><small id="qc-prog"></small></div>
+        <div class="qc-now"><div class="qc-t"><b id="qc-title"></b><small id="qc-desc"></small></div><button class="btn small" id="qc-go" type="button">前往</button></div>
+        <div class="qc-foot"><small class="qc-reward">每完成一項得 30 碎片，全部完成獲得稱號「新手畢業生」</small><button class="linkbtn" id="qc-skip" type="button">略過新手任務</button></div>
+      </div>
+      <div class="fan" id="fan"></div>
+      <ol class="steps3" aria-label="三步驟玩法">
+        <li><span class="n">壹</span><b>出牌</b><span>從手牌選一張卡召喚</span></li>
+        <li><span class="n">貳</span><b>答題</b><span>答對才能發動攻擊</span></li>
+        <li><span class="n">參</span><b>防禦</b><span>對手攻擊時選卡抵擋</span></li>
+      </ol>
+      <p class="tut-hint" id="tut-hint"></p>
+      <fieldset class="diff" id="diff">
+        <legend>難易度 · 答題秒數</legend>
+        <label><input type="radio" name="diff" value="easy"><span><b>簡易</b><small>每題 30 秒<i class="sep"> · </i>速攻 12 秒<span class="more"><br>對手攻擊 ×1.0 · 擋下 45%</span></small></span></label>
+        <label><input type="radio" name="diff" value="normal"><span><b>適中</b><small>每題 20 秒<i class="sep"> · </i>速攻 9 秒<span class="more"><br>對手攻擊 ×1.15 · 擋下 50%</span></small></span></label>
+        <label><input type="radio" name="diff" value="hard"><span><b>困難</b><small>每題 10 秒<i class="sep"> · </i>速攻 6 秒<span class="more"><br>對手攻擊 ×1.3 · 擋下 55%</span></small></span></label>
+      </fieldset>
+      <div class="resume" id="resume" hidden></div>
+      <div class="title-btns title-play">
+        <button class="btn" id="btn-start" type="button">休閒對戰</button>
+        <button class="btn rk-btn" id="btn-ranked" type="button">排位賽<small id="rk-badge"></small></button>
+      </div>
+      <nav class="tgroups" aria-label="更多功能">
+        <div class="tgroup"><span class="tg-h">對戰</span><div class="tg-btns">
+          <button class="btn ghost" id="btn-challenge" type="button">好友挑戰</button>
+          <button class="btn ghost" id="btn-tut" type="button">新手場</button>
+        </div></div>
+        <div class="tgroup"><span class="tg-h">收藏</span><div class="tg-btns">
+          <button class="btn ghost" id="btn-deck" type="button">牌組編輯</button>
+          <button class="btn ghost" id="btn-dex" type="button">卡牌圖鑑</button>
+          <button class="btn ghost" id="btn-tree" type="button">卡牌族譜</button>
+          <button class="btn ghost" id="btn-know" type="button">知識圖鑑<span class="badge" id="kn-badge" hidden></span></button>
+        </div></div>
+        <div class="tgroup"><span class="tg-h">學習</span><div class="tg-btns">
+          <button class="btn ghost" id="btn-nb" type="button">錯題本<span class="badge" id="nb-badge" hidden></span></button>
+          <button class="btn ghost" id="btn-lessons" type="button">教學中心</button>
+          <button class="btn ghost" id="btn-rec" type="button">學習紀錄</button>
+          <button class="btn ghost" id="btn-bank" type="button">題庫管理</button>
+        </div></div>
+        <button class="btn ghost" id="btn-install" type="button" hidden>安裝到主畫面</button>
+      </nav>
+      <details class="rules-more"><summary>玩法與完整規則</summary>
+      <ul class="rules">
+        <li><span class="k">攻</span><span><b>我方回合：</b>從手牌選一張卡召喚。答對該卡屬性的題目，就能以攻擊力直擊對手資金。在難易度的速攻秒數內答對另加 300，連續答對 3 題起再加 500。</span></li>
+        <li><span class="k">擋</span><span><b>對手防禦：</b>你答對後，對手會派一張手牌抵擋，並當場回答一題你攻擊卡屬性的題目。它答對時你只造成「傷害 − 守備力」（不會反彈）。對手的答對率依難易度為 45%／50%／55%，每場另有 2 個擅長屬性（+15%）與 2 個不擅長屬性（−15%），寫在對手資金下方。對手防禦時不發動技能。</span></li>
+        <li><span class="k">守</span><span><b>對手回合：</b>對手召喚怪獸攻擊，選一張手牌防禦，題目出<b>攻擊方的屬性</b>。答對時只承受「攻擊力 − 守備力」，守備力較高還會反彈；答錯則全額承受。</span></li>
+        <li><span class="k">剋</span><span><b>屬性相剋：</b>風險管理 → 衍生性商品 → 虛擬貨幣 → 外匯 → 籌碼與市場 → 基本面 → ETF → 資金管理 → 技術分析 → 風險管理（箭頭前者剋制後者）。防禦卡剋制攻擊方時守備力 ×1.5，被剋制時 ×0.5。</span></li>
+        <li><span class="k">市</span><span><b>市場事件：</b>休閒場與排位場從第 2 回合起每 3 回合翻出一個金融事件（升息、股市暴跌、通膨…），兩個屬性攻擊力 ×1.2、一個 ×0.8，雙方都適用，手牌上會標出「事件 ×1.2」。</span></li>
+        <li><span class="k">排</span><span><b>排位賽：</b>依段位配對手強度（見習交易員 → 傳奇投資人）。勝 +4～+28、敗 −30～−4，依段位與知識、策略、風險管理的表現計分；加入排行榜後，題目由伺服器出題（含每次換數字的計算題）；排位牌組點數上限 80（普通 1、稀有 2、超稀有 3、極稀有 5）。每月一個賽季，依最高段位發放限定稱號與卡背。</span></li>
+        <li><span class="k">弱</span><span><b>弱項加成：</b>學習紀錄中正確率最低的屬性是你的弱項，用弱項屬性的卡攻擊，答對時傷害 ×1.2。</span></li>
+        <li><span class="k">組</span><span><b>牌組：</b>用 40 張卡組成自己的牌組（每種最多 2 張）。一開始擁有普通與稀有卡，每贏一場可以從 3 張未收集的卡中選 1 張加入收藏。</span></li>
+        <li><span class="k">技</span><span><b>技能：</b>每張卡都有專屬技能，例如刪去錯誤選項、減半傷害、反彈、回復資金或再攻擊一次。對手的卡在攻擊命中時也會發動技能，可在卡牌圖鑑查看全部。</span></li>
+        <li><span class="k">勝</span><span><b>勝負：</b>雙方資金各 10000，手牌 5 張，先歸零者落敗。答題限時依難易度而定，結算畫面會列出答錯題目與解析。</span></li>
+      </ul>
+      </details>
+      <div class="bank-note" id="bank-note"></div>
+      <button class="linkbtn ver-tag" id="ver-tag" type="button"></button>
+    </div>
+  </div>
+</section>
+
+<!-- DUEL -->
+<section class="screen" id="scr-duel" hidden>
+  <div class="duel" id="duel">
+    <div class="topline"><span class="turn" id="turn-label">第 1 回合</span><span id="streak-label" class="streak-label"></span><button class="rules-btn" id="btn-rules" type="button" aria-label="規則速查" title="規則速查：相剋圖、傷害怎麼算"><i aria-hidden="true">?</i><span>規則</span></button></div>
+    <div class="market-label" id="market-label" hidden></div>
+    <div class="bar foe">
+      <div class="seal">對手</div>
+      <div class="lp">
+        <div class="lp-top"><span>對手資金</span><span class="lp-num" id="lp-c">10000</span></div>
+        <div class="lp-track"><div class="lp-fill" id="lpf-c"></div></div>
+        <div class="foe-prof" id="foe-prof"></div>
+      </div>
+      <div class="mini-hand" id="cpu-hand"></div>
+      <div class="deck-ct" id="deck-c"></div>
+    </div>
+    <div class="field" id="field">
+      <div class="slot" id="slot-c"><span class="ph">對手場地</span></div>
+      <div class="vs"><div class="kanji">對</div><div class="log" id="log">決鬥準備中…</div></div>
+      <div class="slot" id="slot-p"><span class="ph">我方場地</span></div>
+      <div class="foe-quiz" id="foe-quiz" hidden aria-live="polite"></div>
+    </div>
+    <div class="bar me">
+      <div class="seal">我方</div>
+      <div class="lp">
+        <div class="lp-top"><span>我方資金</span><span class="lp-num" id="lp-p">10000</span></div>
+        <div class="lp-track"><div class="lp-fill" id="lpf-p"></div></div>
+      </div>
+      <div class="deck-ct" id="deck-p"></div>
+    </div>
+    <div class="phase" id="phase"><span class="tag" id="phase-tag">待機</span><span class="msg" id="phase-msg"></span></div>
+    <div class="hand" id="hand"></div>
+    <div class="skill-tip" id="skill-tip">將游標移到手牌上，可以查看卡牌技能。</div>
+    <div class="dueltools"><span class="duel-meta"><span id="save-label" class="save-label"></span><span id="pt-label" class="pt-label"></span><span id="bg-label" class="bg-label"></span><span class="kbd-hint">鍵盤 1–4 作答、Enter 繼續</span></span><span class="btn-row"><button class="btn ghost small" id="btn-save" type="button" disabled>記錄並退出</button><button class="btn ghost small" id="btn-quit" type="button">投降回標題</button></span></div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section class="screen" id="scr-result" hidden>
+  <div class="page" id="result"></div>
+</section>
+
+<!-- DEX -->
+<section class="screen" id="scr-dex" hidden>
+  <div class="page" style="max-width:1100px">
+    <div class="eyebrow">一百八十種卡牌一覽</div>
+    <h3 class="sec">卡牌圖鑑</h3>
+    <p class="lead">共 180 張卡，9 個屬性各 20 張（普通 6、稀有 6、超稀有 4、極稀有 4）。稀有度依星數分為普通、稀有、超稀有、極稀有。攻擊類技能在對手使用時，於攻擊命中你的時候同樣發動。</p>
+    <div class="dex-filter" id="dex-filter"></div>
+    <div class="dex" id="dex"></div>
+    <div class="btn-row"><button class="btn" id="btn-dex-back" type="button">回標題</button><button class="btn ghost" id="dex-tree" type="button">看我的卡牌族譜</button></div>
+  </div>
+</section>
+
+<!-- NOTEBOOK -->
+<section class="screen" id="scr-notebook" hidden>
+  <div class="page">
+    <div class="eyebrow">間隔複習</div>
+    <h3 class="sec">錯題本</h3>
+    <div id="nb-main" class="nb-main">
+      <p class="lead">對戰中答錯的題目會自動收進來。之後的對戰會優先穿插到期的錯題，也可以在這裡直接複習。答對一次升一階，第 1 階立即複習、第 2 階隔 1 天、第 3 階隔 3 天，第 3 階再答對就算掌握；答錯會退回第 1 階。還沒到複習日就先練習的題目，答對不會升階，要隔天再答對才算數。</p>
+      <div class="stat-row" id="nb-stats"></div>
+      <div class="btn-row"><button class="btn" id="nb-review-due" type="button">複習到期題目</button><button class="btn ghost" id="nb-review-all" type="button">提前練習全部未掌握</button></div>
+      <div class="dex-filter" id="nb-filter"></div>
+      <div class="missed" id="nb-list"></div>
+      <div class="btn-row"><button class="btn ghost small" id="nb-toggle" type="button">顯示已掌握的題目</button></div>
+      <div class="export nb-export">
+        <div class="export-head"><h3 class="sec">輸出錯題本</h3><p class="lead">依照上面選的屬性輸出。複習講義附正解與解說；測驗卷只有題目，解答在最後一頁，可以印出來自己考；CSV 可以用 Excel 或 Google 試算表開啟。</p></div>
+        <label class="nb-export-opt"><input type="checkbox" id="nb-export-mastered"> 包含已掌握的題目</label>
+        <div class="btn-row"><button class="btn small" type="button" id="nb-export-pdf">PDF 複習講義</button><button class="btn small" type="button" id="nb-export-quiz">PDF 測驗卷</button><button class="btn ghost small" type="button" id="nb-export-csv">Excel（CSV）</button></div>
+        <p class="status" id="nb-export-status" role="status"></p>
+      </div>
+    </div>
+    <div id="nb-review" class="nb-review" hidden>
+      <div class="q-mode"><span class="m">複習模式</span><span class="meta" id="rv-progress"></span></div>
+      <div class="q-timer"><i id="rv-bar"></i></div>
+      <p class="q-text" id="rv-q"></p>
+      <div class="q-opts" id="rv-opts"></div>
+      <div class="q-feedback" id="rv-fb" hidden><div class="verdict" id="rv-verdict"></div><p id="rv-explain"></p><button class="btn small" id="rv-next" type="button">下一題 ▶</button></div>
+      <div class="btn-row"><button class="btn" id="rv-done" type="button" hidden>回到錯題本</button><button class="linkbtn" id="rv-quit" type="button">結束複習</button></div>
+    </div>
+    <div><button class="btn" id="btn-nb-back" type="button">回標題</button></div>
+  </div>
+</section>
+
+<!-- LEARNING RECORD -->
+<section class="screen" id="scr-daily" hidden>
+  <div class="page daily-page">
+    <div class="daily-top"><div class="eyebrow" id="daily-date"></div><div class="daily-streak" id="daily-streak"></div></div>
+    <div id="daily-body"></div>
+  </div>
+</section>
+<section class="screen" id="scr-know" hidden>
+  <div class="page">
+    <div class="eyebrow">收集 · 升級 · 學會</div>
+    <h3 class="sec">金融知識圖鑑</h3>
+    <p class="lead">每張知識卡都是一個金融觀念：股票卡、防禦卡、事件卡、陷阱卡各 25 張，共 100 張。每升一級就解鎖下一段說明（是什麼 → 實際例子 → 常見誤區）；完成每日挑戰、每天第一場對戰勝利都會得到新卡，碎片也可以解鎖與升級。</p>
+    <div id="kn-sum"></div>
+    <div class="filters" id="kn-filter"></div>
+    <div class="kn-grid" id="kn-grid"></div>
+    <div class="btn-row"><button class="btn" id="btn-know-back" type="button">回標題</button></div>
+  </div>
+</section>
+<section class="screen" id="scr-ranked" hidden>
+  <div class="page">
+    <div class="eyebrow" id="rk-season"></div>
+    <h3 class="sec">排位賽</h3>
+    <p class="lead">依段位配對對手強度，依勝負與策略表現計分。每月一個賽季，月底依最高段位發放限定稱號與卡背。</p>
+    <div id="rk-body"></div>
+  </div>
+</section>
+<section class="screen" id="scr-board" hidden>
+  <div class="page">
+    <div class="eyebrow" id="bd-season"></div>
+    <h3 class="sec">線上排行榜</h3>
+    <p class="lead">排位賽的積分，和所有加入排行榜的玩家一起排名。每月一個賽季，月初重新開始。</p>
+    <div id="bd-body"></div>
+  </div>
+</section>
+<section class="screen" id="scr-challenge" hidden>
+  <div class="page">
+    <div class="eyebrow">同一副牌 · 比分數</div>
+    <h3 class="sec">好友挑戰</h3>
+    <p class="lead">出一題給朋友，或接受朋友的挑戰。每個人拿到同一副牌、同一個對手，看誰的金融知識比較強。</p>
+    <div id="ch-body"></div>
+  </div>
+</section>
+<section class="screen" id="scr-record" hidden>
+  <div class="page">
+    <div class="eyebrow">長期學習數據</div>
+    <h3 class="sec">學習紀錄</h3>
+    <p class="lead">每場對戰結束（包含投降）都會記在這台裝置。弱項會用在「弱項加成」與牌組建議，對手在困難模式下也會針對你的弱項出牌。</p>
+    <div id="rec-body"></div>
+    <div class="rec-box rec-export" id="rec-export">
+      <div class="export-head"><h3 class="sec">輸出學習紀錄</h3><p class="lead">學習報告（PDF）含各屬性正確率與趨勢、學習建議、最常答錯的題目和全部對戰紀錄，可以印出來檢討；成績單是一張可以分享的圖片；CSV 可以用 Excel 或 Google 試算表自己分析。</p></div>
+      <div class="btn-row"><button class="btn small" type="button" id="rec-export-pdf">PDF 學習報告</button><button class="btn ghost small" type="button" id="rec-export-card">分享成績單（圖片）</button><button class="btn ghost small" type="button" id="rec-export-games">對戰紀錄（CSV）</button><button class="btn ghost small" type="button" id="rec-export-q">題目統計（CSV）</button></div>
+      <p class="status" id="rec-export-status" role="status"></p>
+    </div>
+    <div class="btn-row"><button class="btn" id="btn-rec-back" type="button">回標題</button><button class="btn ghost small danger" id="rec-clear" type="button">清除學習紀錄</button></div>
+  </div>
+</section>
+
+<!-- SKILL TREE -->
+<section class="screen" id="scr-tree" hidden>
+  <div class="page" style="max-width:1100px">
+    <div class="eyebrow">收藏、牌組與技能的全貌</div>
+    <h3 class="sec">卡牌技能族譜</h3>
+    <p class="lead">把 180 張卡依「屬性 → 技能系統 → 卡牌」排成族譜，標出你已收集、放進牌組、還沒收集的卡，並分析目前儲存的牌組有哪些強項和弱點。可以輸出成圖片分享給朋友朝聖，或輸出規劃表離線規劃怎麼湊齊。</p>
+    <div class="stat-row" id="tree-sum"></div>
+    <div class="btn-row"><button class="btn small" id="tree-png" type="button">輸出族譜圖（PNG）</button><button class="btn ghost small" id="tree-share" type="button">分享給朋友</button><button class="btn ghost small" id="tree-pdf" type="button">輸出規劃表（PDF）</button><span class="status" id="tree-status" role="status"></span></div>
+    <div class="tr-two">
+      <div class="tr-box good"><h4>強項</h4><ul id="tree-good"></ul></div>
+      <div class="tr-box bad"><h4>需要補強</h4><ul id="tree-bad"></ul></div>
+    </div>
+    <h4 class="tr-h">屬性與相剋</h4>
+    <p class="muted tr-note">防禦時，卡牌屬性剋制對手的攻擊屬性，守備力 ×1.5。正確率是你這個屬性題目的累積答對率（答滿 10 題才顯示）。</p>
+    <div class="tr-scroll" id="tree-cats"></div>
+    <h4 class="tr-h">技能系統（牌組）</h4>
+    <div id="tree-fams"></div>
+    <h4 class="tr-h">收集建議</h4>
+    <div class="tr-wishes" id="tree-wish"></div>
+    <h4 class="tr-h">族譜</h4>
+    <p class="muted tr-note">點卡牌可以看詳細資料。實線：已收集；虛線：未收集；金框：在牌組中。</p>
+    <div id="tree-body"></div>
+    <div class="btn-row"><button class="btn" id="tree-back" type="button">回標題</button><button class="btn ghost" id="tree-deck" type="button">去編輯牌組</button></div>
+  </div>
+</section>
+
+<!-- LESSONS -->
+<section class="screen" id="scr-lessons" hidden>
+  <div class="page">
+    <div class="eyebrow">一課一分鐘 · 隨時重玩</div>
+    <h3 class="sec">教學中心</h3>
+    <p class="lead">把規則拆成五堂小課：先看重點，再做 3 題情境練習。題目每次都會從卡牌和規則重新出，答對 2 題以上就算完成，第一次完成每課 +10 碎片。</p>
+    <div id="ls-body"></div>
+    <div class="btn-row"><button class="btn" id="ls-back" type="button">回標題</button></div>
+  </div>
+</section>
+
+<!-- DECK BUILDER -->
+<section class="screen" id="scr-deck" hidden>
+  <div class="page" style="max-width:1100px">
+    <div class="eyebrow">收藏與牌組</div>
+    <h3 class="sec">牌組編輯</h3>
+    <p class="lead">從已收集的卡中選 40 張組成牌組，每種卡最多 2 張。對戰時牌組用完會重新洗牌。每贏一場可以從 3 張未收集的卡中選 1 張，困難模式勝利的選項必定包含極稀有卡。</p>
+    <div class="deck-sum" id="deck-sum"></div>
+    <div class="btn-row"><button class="btn small" id="deck-save" type="button">儲存牌組</button><button class="btn ghost small" id="deck-auto" type="button">自動組牌</button><button class="btn ghost small" id="deck-weak" type="button">弱項練習牌組</button><button class="btn ghost small" id="deck-clear" type="button">清空</button><button class="btn ghost small" id="deck-tree" type="button">牌組分析與族譜</button><span class="status" id="deck-status" role="status"></span></div>
+    <p class="deck-cost" id="deck-cost"></p>
+    <div class="dex-filter" id="deck-filter"></div>
+    <div class="deck-grid" id="deck-grid"></div>
+    <div><button class="btn" id="btn-deck-back" type="button">回標題</button></div>
+  </div>
+</section>
+
+<!-- BANK -->
+<section class="screen" id="scr-bank" hidden>
+  <div class="page">
+    <div class="eyebrow">題目與回報</div>
+    <h3 class="sec">題庫管理</h3>
+    <p class="lead">內建題目加上你匯入的自訂題目會一起出題。卡牌屬性決定題目類別，卡牌星數決定難度（1–2 星出初階、3 星出中階、4 星出進階）。自訂題目存在這台裝置的瀏覽器裡。</p>
+    <div class="tbl-wrap"><table class="bank-table" id="bank-table"></table></div>
+
+    <h3 class="sec">匯入題目</h3>
+    <p class="lead">貼上 JSON（可以是題目陣列，或 <code>{"questions":[…]}</code>），也可以選擇 .json 檔。相同 id 會覆蓋舊題。</p>
+    <textarea id="import-text" placeholder='{"questions":[ … ]}'></textarea>
+    <div class="btn-row">
+      <button class="btn small" id="btn-import" type="button">匯入</button>
+      <label class="btn ghost small" for="import-file">選擇 .json 檔</label>
+      <input type="file" id="import-file" accept=".json,application/json" hidden>
+    </div>
+    <div class="status" id="import-status" role="status"></div>
+
+    <h3 class="sec">題目格式</h3>
+    <p class="lead"><code>category</code> 填 <code>tech</code> 技術分析、<code>fund</code> 基本面、<code>deriv</code> 衍生性商品、<code>risk</code> 風險管理、<code>chips</code> 籌碼與市場、<code>fx</code> 外匯、<code>crypto</code> 虛擬貨幣、<code>etf</code> ETF（也可直接寫中文類別名）。<code>difficulty</code> 為 1–3，<code>answer</code> 是正確選項的索引，從 0 開始。</p>
+<pre class="tpl">{
+  "questions": [
+    {
+      "id": "my-001",
+      "category": "tech",
+      "difficulty": 2,
+      "q": "題目文字",
+      "options": ["選項一", "選項二", "選項三", "選項四"],
+      "answer": 0,
+      "explain": "答對或答錯後顯示的解析"
+    }
+  ]
+}</pre>
+
+    <h3 class="sec">題目回報<span class="muted" id="rp-count" style="font-size:15px;font-family:var(--f-body)"></span></h3>
+    <p class="lead">答題時回報的問題存在這台裝置。按「複製全部回報」後貼給出題者（或貼給 Claude），就能逐題修正題庫。</p>
+    <div class="missed" id="rp-list"></div>
+    <div class="btn-row"><button class="btn ghost small" id="rp-copy" type="button">複製全部回報</button><button class="btn ghost small danger" id="rp-clear" type="button">清除回報</button></div>
+    <textarea id="rp-out" readonly hidden></textarea>
+    <div class="status" id="rp-status" role="status"></div>
+
+    <h3 class="sec">匯出與清除</h3>
+    <div class="btn-row">
+      <button class="btn ghost small" id="btn-export" type="button">匯出全部題庫 JSON</button>
+      <button class="btn ghost small" id="btn-copy" type="button" hidden>複製</button>
+      <button class="btn ghost small danger" id="btn-clear" type="button">清除自訂題目</button>
+    </div>
+    <textarea id="export-text" readonly hidden></textarea>
+    <div class="status" id="export-status" role="status"></div>
+    <div><button class="btn" id="btn-bank-back" type="button">回標題</button></div>
+  </div>
+</section>
+</div>
+
+<!-- CARD ZOOM (long-press) -->
+<div id="zoom" class="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="zoom-name">
+  <div class="zoom-card"><div id="zoom-art"></div>
+    <div class="zoom-info"><h3 id="zoom-name"></h3><div class="meta" id="zoom-meta"></div><div class="stats" id="zoom-stats"></div>
+      <div class="sk" id="zoom-sk"></div><div class="fl" id="zoom-fl"></div><div id="zoom-notes"></div>
+      <div class="btn-row"><button class="btn small" id="zoom-play" type="button" hidden>出這張牌</button><button class="btn ghost small" id="zoom-close" type="button">關閉</button></div></div></div>
+</div>
+
+<!-- SETTINGS -->
+<div class="update-bar" id="update-bar" hidden role="status"><span>有新版本可以使用。對戰進度會自動記錄，重新載入後可以繼續。</span><button class="btn small" id="update-go" type="button">重新載入</button><button class="btn ghost small" id="update-later" type="button">稍後</button></div>
+<div id="kn-dlg" class="dlg" hidden role="dialog" aria-modal="true" aria-label="知識卡">
+  <div class="care-card kn-dlg-card"><button class="kn-x" id="kn-close" type="button" aria-label="關閉">×</button><div id="kn-card"></div></div>
+</div>
+<div id="news-dlg" class="dlg" hidden role="dialog" aria-modal="true" aria-label="更新內容">
+  <div class="care-card"><div class="care-h"><div class="seal">新</div><h3>更新內容</h3></div><div id="news-body"></div><div class="btn-row"><button class="btn" id="news-ok" type="button">知道了</button></div></div>
+</div>
+<div id="season-dlg" class="dlg" hidden role="dialog" aria-modal="true" aria-label="賽季結算">
+  <div class="care-card"><div id="season-body"></div><div class="btn-row"><button class="btn" id="season-ok" type="button">收下</button></div></div>
+</div>
+<div id="level-dlg" class="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="level-title">
+  <div class="care-card level-card">
+    <div class="care-h"><div class="seal">始</div><h3 id="level-title">你對投資理財熟悉嗎？</h3></div>
+    <p class="lead">選一個最接近你的，我們幫你調好難易度。之後隨時可以在標題畫面改難易度。</p>
+    <div class="level-opts">
+      <button class="level-opt" type="button" data-level="new"><b>完全新手</b><small>簡易難度（每題 30 秒），前 3 場休閒對戰只出初階題，對手也比較常擋失手</small></button>
+      <button class="level-opt" type="button" data-level="some"><b>懂一點</b><small>適中難度（每題 20 秒），先玩一場新手場熟悉規則</small></button>
+      <button class="level-opt" type="button" data-level="pro"><b>交易老手</b><small>略過新手場，直接開放所有功能</small></button>
+    </div>
+  </div>
+</div>
+<div id="rules-dlg" class="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="rules-title">
+  <div class="care-card rules-card">
+    <div class="care-h"><div class="seal">規</div><h3 id="rules-title">規則速查</h3></div>
+    <div id="rules-body"></div>
+    <div class="btn-row"><button class="btn small" id="rules-close" type="button">回到對戰</button></div>
+  </div>
+</div>
+<div id="settings" class="dlg" hidden role="dialog" aria-modal="true" aria-labelledby="set-title">
+  <div class="care-card">
+    <div class="care-h"><div class="seal">設</div><h3 id="set-title">設定</h3></div>
+    <label class="set-row"><span><b>匿名使用統計</b><small>只送出每天開啟與對戰的次數，讓作者知道有多少人在玩；不含帳號、暱稱或任何個人資料</small></span><input type="checkbox" id="set-stats" class="sw"></label>
+    <div class="set-row set-fx"><span><b>文字大小</b><small>題目、選項、解說、錯題本與知識卡的文字</small></span>
+      <div class="seg" id="set-text" role="group" aria-label="文字大小"><button type="button" data-v="m">標準</button><button type="button" data-v="l">大</button><button type="button" data-v="xl">特大</button></div></div>
+    <p class="set-demo" id="set-text-demo" aria-hidden="true">本益比＝股價 ÷ 每股盈餘。本益比低，不一定代表便宜。</p>
+    <label class="set-row"><span><b>色弱友善配色</b><small>答對、答錯改用藍色與橘色，並在選項加上 ✓ ✗ 標記</small></span><input type="checkbox" id="set-cvd" class="sw"></label>
+    <label class="set-row"><span><b>快速模式</b><small>縮短過場與戰鬥動畫，回合換手更快</small></span><input type="checkbox" id="set-fast" class="sw"></label>
+    <div class="set-row set-fx"><span><b>簡化特效</b><small id="set-fx-note"></small></span>
+      <div class="seg" id="set-fx" role="group" aria-label="簡化特效"><button type="button" data-v="auto">自動</button><button type="button" data-v="on">開</button><button type="button" data-v="off">關</button></div></div>
+    <label class="set-row"><span><b>音樂音量</b><small id="set-music-v">100%</small></span><input type="range" id="set-music" min="0" max="100" step="5"></label>
+    <label class="set-row"><span><b>音效音量</b><small id="set-sfx-v">100%</small></span><input type="range" id="set-sfx" min="0" max="100" step="5"></label>
+    <p class="muted" style="font-size:13px">右上角「音效」按鈕或鍵盤 M 可以一鍵靜音。設定存在這台裝置。</p>
+    <div class="set-row set-app"><span><b>安裝 App</b><small id="pwa-note"></small></span><button class="btn ghost small" id="pwa-install" type="button" hidden>安裝</button></div>
+    <div class="set-prog"><span><b>進度備份</b><small>收藏、牌組、錯題本、學習紀錄與設定存成一個檔案，可以搬到另一台裝置或另一個瀏覽器。</small></span>
+      <div class="btn-row"><button class="btn ghost small" id="prog-export" type="button">匯出進度</button><button class="btn ghost small" id="prog-import" type="button">匯入進度</button><button class="btn small" id="prog-apply" type="button" hidden>套用這個進度</button></div>
+      <input type="file" id="prog-file" accept=".json,application/json" hidden><p class="status" id="prog-status" role="status"></p></div>
+    <div class="set-prog" id="xfer"><span><b>轉移碼</b><small>不用傳檔案：這台裝置產生一組 8 碼代碼，24 小時內在另一台裝置或瀏覽器（例如從 LINE 換到 Chrome）輸入，就能接續目前的進度。代碼只能使用一次。</small></span>
+      <div class="btn-row"><button class="btn ghost small" id="xfer-make" type="button">產生轉移碼</button></div>
+      <div class="xfer-code" id="xfer-code" hidden></div>
+      <div class="bd-form"><input id="xfer-in" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" maxlength="9" placeholder="輸入轉移碼，例如 K7Q2-M9XD" aria-label="轉移碼"><button class="btn ghost small" id="xfer-use" type="button">接續進度</button></div>
+      <p class="status" id="xfer-status" role="status"></p></div>
+    <p class="muted set-ver" id="set-version"></p>
+    <div class="btn-row"><button class="btn small" id="set-ok" type="button">完成</button></div>
+  </div>
+</div>
+
+<!-- PLAY-TIME CARE -->
+<div id="care" hidden role="dialog" aria-modal="true" aria-labelledby="care-title">
+  <div class="care-card">
+    <div class="care-h"><div class="seal">休</div><h3 id="care-title">善意提醒</h3></div>
+    <p id="care-msg">你已經連續遊玩 30 分鐘了。</p>
+    <ul class="care-tips"><li>起身伸展 1 分鐘</li><li>看看 6 公尺外的遠方</li><li>喝一杯水</li><li>眨眨眼，放鬆肩頸</li></ul>
+    <p class="muted" style="font-size:13px">連續遊玩滿 1 小時後，會進入 2 小時的強制休息，對戰會自動記錄。</p>
+    <div class="btn-row"><button class="btn small" id="care-ok" type="button">我知道了，繼續</button><button class="btn ghost small" id="care-rest" type="button">記錄並休息</button></div>
+  </div>
+</div>
+<div id="rest" class="waves-bg" hidden role="dialog" aria-modal="true" aria-labelledby="rest-word">
+  <div class="rest-inner">
+    <div class="rest-sub">強制休息時間</div>
+    <h2 class="rest-word" id="rest-word">休息</h2>
+    <p>你已經連續遊玩 1 小時，先讓眼睛和身體休息一下。休息結束前無法開始對戰。</p>
+    <div class="rest-clock" id="rest-clock">2:00:00</div>
+    <p class="muted" id="rest-until"></p>
+    <p class="muted" id="rest-saved"></p>
+    <button class="btn" id="rest-done" type="button" hidden>回到遊戲</button>
+  </div>
+</div>
+
+<!-- TUTORIAL -->
+<div id="tutor" hidden>
+  <div class="tut-ring" id="tut-ring"></div>
+  <div class="tut-bubble" id="tut-bubble" role="dialog" aria-live="polite" aria-labelledby="tut-title">
+    <div class="tut-step" id="tut-step"></div>
+    <h4 id="tut-title"></h4>
+    <div class="tut-text" id="tut-text"></div>
+    <div class="tut-actions"><button class="btn small" id="tut-ok" type="button" hidden>知道了，開始計時</button><button class="linkbtn" id="tut-skip" type="button">略過引導</button></div>
+  </div>
+</div>
+
+<!-- OVERLAYS -->
+<div id="trans" hidden aria-live="assertive">
+  <div class="t-band t-a"></div><div class="t-band t-b"></div><div class="t-slash"></div>
+  <div class="t-text"><div class="t-main" id="t-main"></div><div class="t-sub" id="t-sub"></div></div>
+</div>
+<div id="quiz" hidden role="dialog" aria-modal="true" aria-labelledby="q-text">
+  <div class="q-panel">
+    <div class="q-cards" id="q-cards"></div>
+    <div class="q-main">
+      <div class="q-mode"><span class="m" id="q-mode"></span><span class="meta" id="q-meta"></span></div>
+      <div class="q-skill" id="q-skill"></div>
+      <div class="q-adv" id="q-adv" hidden></div>
+      <div class="q-timer-row"><div class="q-timer" id="q-timer"><i id="q-timer-bar"></i></div><span class="q-sec" id="q-sec" aria-hidden="true"></span></div>
+      <p class="q-text" id="q-text"></p>
+      <div class="q-opts" id="q-opts"></div>
+      <div class="q-feedback" id="q-feedback" hidden>
+        <div class="verdict" id="q-verdict"></div>
+        <p id="q-explain"></p>
+        <p class="q-asof" id="q-asof" hidden></p>
+        <div class="fb-actions"><button class="btn small" id="q-continue" type="button">進行戰鬥 ▶</button><button class="linkbtn" id="q-report-open" type="button">這題有問題？回報</button></div>
+        <div class="report" id="q-report" hidden>
+          <div class="report-reasons" id="q-report-reasons">
+            <label><input type="radio" name="rr" value="答案有誤" checked><span>答案有誤</span></label>
+            <label><input type="radio" name="rr" value="選項有問題"><span>選項有問題</span></label>
+            <label><input type="radio" name="rr" value="題意不清"><span>題意不清</span></label>
+            <label><input type="radio" name="rr" value="資訊過時"><span>資訊過時</span></label>
+            <label><input type="radio" name="rr" value="其他"><span>其他</span></label>
+          </div>
+          <textarea id="q-report-note" rows="2" maxlength="300" placeholder="補充說明（選填），例如正確答案應該是什麼"></textarea>
+          <div class="btn-row"><button class="btn small" id="q-report-send" type="button">送出回報</button><button class="linkbtn" id="q-report-cancel" type="button">取消</button></div>
+        </div>
+        <p class="status ok" id="q-report-status" hidden></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="module" src="./src/js/main.js"></script>
+</body>
+</html>
