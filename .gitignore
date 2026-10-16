@@ -1,10 +1,9 @@
 node_modules/
 dist/
-dist-test/
-artifact/
-standalone/
+single/
 test-results/
 playwright-report/
 __pycache__/
 worker/pool/pool.json
 worker/src/pool.gen.json
+.vercel
